@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Leaf -->
+  <path d="M60 160 C30 120, 40 60, 90 30 C70 70, 65 110, 75 140 C80 100, 95 70, 90 30 C130 50, 140 100, 100 150 Z" fill="#2DB553" stroke="#1a8a3c" stroke-width="2"/>
+  <!-- Water drops -->
+  <circle cx="115" cy="45" r="8" fill="#0EA5E9"/>
+  <circle cx="135" cy="65" r="5" fill="#0EA5E9" opacity="0.8"/>
+  <circle cx="125" cy="80" r="3.5" fill="#0EA5E9" opacity="0.6"/>
+  <!-- Text EcoZelo -->
+  <text x="100" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold">
+    <tspan fill="#0EA5E9">Eco</tspan><tspan fill="#2DB553">Zelo</tspan>
+  </text>
+</svg>

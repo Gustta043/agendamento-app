@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Servico {
+  id          String   @id @default(cuid())
+  nome        String
+  descricao   String
+  preco       Float
+  duracao     Int      // duração em minutos
+  imagem      String?
+  ativo       Boolean  @default(true)
+  criadoEm    DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  agendamentos Agendamento[]
+}
+
+model Disponibilidade {
+  id          String   @id @default(cuid())
+  diaSemana   Int      // 0=Domingo, 1=Segunda, ..., 6=Sábado
+  horaInicio  String   // "08:00"
+  horaFim     String   // "18:00"
+  ativo       Boolean  @default(true)
+}
+
+model BloqueioData {
+  id    String   @id @default(cuid())
+  data  DateTime // data específica bloqueada
+  motivo String?
+}
+
+model Agendamento {
+  id            String   @id @default(cuid())
+  clienteNome   String
+  clienteEmail  String
+  clienteTelefone String
+  clienteEndereco String
+  servico       Servico  @relation(fields: [servicoId], references: [id])
+  servicoId     String
+  data          DateTime
+  horaInicio    String
+  horaFim       String
+  status        String   @default("pendente") // pendente, confirmado, cancelado, concluido
+  pagamentoStatus String @default("pendente") // pendente, pago, reembolsado
+  pagamentoId   String?  // ID do pagamento no Stripe
+  valorTotal    Float
+  observacoes   String?
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
+}
+
+model ConfiguracaoAdmin {
+  id              String @id @default(cuid())
+  nomeEmpresa     String @default("EcoZelo Higienização")
+  telefoneWhatsapp String @default("")
+  intervaloSlots  Int    @default(30) // intervalo entre slots em minutos
+  antecedenciaMinima Int @default(24) // horas de antecedência mínima
+  antecedenciaMaxima Int @default(30) // dias máximos para agendar no futuro
+}
