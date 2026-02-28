@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -18,8 +18,21 @@ import {
 } from "react-icons/fi";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { emojiServico } from "@/lib/emojis";
 
-export default function ConfirmacaoPage() {
+export default function ConfirmacaoPageWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    }>
+      <ConfirmacaoPage />
+    </Suspense>
+  );
+}
+
+function ConfirmacaoPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -110,7 +123,7 @@ export default function ConfirmacaoPage() {
           <div className="space-y-4">
             <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
               <span className="text-2xl">
-                {agendamento.servico?.nome.includes("Sofá") ? "🛋️" : "✨"}
+                {emojiServico(agendamento.servico?.nome || "")}
               </span>
               <div>
                 <p className="font-bold text-gray-900 text-lg">
@@ -185,9 +198,16 @@ export default function ConfirmacaoPage() {
 
         <div className="card p-5 mb-6 bg-blue-50 border-blue-100">
           <p className="text-blue-800 text-sm">
-            📧 Uma confirmação foi enviada para{" "}
-            <strong>{agendamento.clienteEmail}</strong>. O profissional
-            entrará em contato pelo WhatsApp no dia do serviço.
+            � O profissional entrará em contato pelo WhatsApp no dia do serviço.
+            Em caso de dúvidas, entre em contato pelo{" "}
+            <a
+              href="https://wa.me/5543991583833"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold underline text-primary-600 hover:text-primary-700"
+            >
+              WhatsApp
+            </a>.
           </p>
         </div>
 

@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { emojiServico } from "@/lib/emojis";
 import {
   FiCheckCircle,
   FiClock,
@@ -137,23 +138,7 @@ export default async function Home() {
               >
                 <div className="h-40 bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center">
                   <span className="text-5xl">
-                    {servico.nome.includes("Sofá")
-                      ? "🛋️"
-                      : servico.nome.includes("Colchão")
-                      ? "🛏️"
-                      : servico.nome.includes("Tapete")
-                      ? "🧶"
-                      : servico.nome.includes("Vidro")
-                      ? "🪟"
-                      : servico.nome.includes("Impermeabiliza")
-                      ? "💧"
-                      : servico.nome.includes("Automotivo") || servico.nome.includes("Banco")
-                      ? "🚗"
-                      : servico.nome.includes("Cadeira")
-                      ? "💺"
-                      : servico.nome.includes("Poltrona")
-                      ? "🪑"
-                      : "✨"}
+                    {emojiServico(servico.nome)}
                   </span>
                 </div>
                 <div className="p-5 flex flex-col flex-1">

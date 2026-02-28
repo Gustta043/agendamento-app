@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -22,6 +22,7 @@ import {
   FiFileText,
 } from "react-icons/fi";
 import toast from "react-hot-toast";
+import { emojiServico } from "@/lib/emojis";
 import {
   format,
   addMonths,
@@ -41,7 +42,19 @@ import { ptBR } from "date-fns/locale";
 
 type Etapa = 1 | 2 | 3 | 4;
 
-export default function AgendarPage() {
+export default function AgendarPageWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    }>
+      <AgendarPage />
+    </Suspense>
+  );
+}
+
+function AgendarPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const servicoIdParam = searchParams.get("servico");
@@ -280,17 +293,7 @@ export default function AgendarPage() {
                       </div>
                     </div>
                     <span className="text-3xl">
-                      {servico.nome.includes("Sofá")
-                        ? "🛋️"
-                        : servico.nome.includes("Colchão")
-                        ? "🛏️"
-                        : servico.nome.includes("Tapete")
-                        ? "🧶"
-                        : servico.nome.includes("Cadeira")
-                        ? "💺"
-                        : servico.nome.includes("Poltrona")
-                        ? "🪑"
-                        : "✨"}
+                      {emojiServico(servico.nome)}
                     </span>
                   </div>
                 </button>
@@ -510,9 +513,22 @@ export default function AgendarPage() {
                   <input
                     type="tel"
                     className="input-field"
-                    placeholder="(11) 99999-9999"
+                    placeholder="(43) 99999-9999"
                     value={clienteTelefone}
-                    onChange={(e) => setClienteTelefone(e.target.value)}
+                    onChange={(e) => {
+                      // Máscara de telefone: (XX) XXXXX-XXXX
+                      let v = e.target.value.replace(/\D/g, "");
+                      if (v.length > 11) v = v.slice(0, 11);
+                      if (v.length > 7) {
+                        v = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+                      } else if (v.length > 2) {
+                        v = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+                      } else if (v.length > 0) {
+                        v = `(${v}`;
+                      }
+                      setClienteTelefone(v);
+                    }}
+                    maxLength={16}
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -584,11 +600,7 @@ export default function AgendarPage() {
               <div className="space-y-4">
                 <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
                   <span className="text-2xl">
-                    {servicoSelecionado.nome.includes("Sofá")
-                      ? "🛋️"
-                      : servicoSelecionado.nome.includes("Colchão")
-                      ? "🛏️"
-                      : "✨"}
+                    {emojiServico(servicoSelecionado.nome)}
                   </span>
                   <div>
                     <p className="font-bold text-gray-900">

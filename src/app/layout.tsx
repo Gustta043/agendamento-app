@@ -5,7 +5,19 @@ import { Toaster } from "react-hot-toast";
 export const metadata: Metadata = {
   title: "EcoZelo Higienização - Agendamento Online",
   description:
-    "Higienização e impermeabilização de estofados residencial e automotivo. Agende online de forma rápida e prática!",
+    "Higienização e impermeabilização de estofados residencial e automotivo em Cambé e Ibiporã - PR. Agende online de forma rápida e prática!",
+  keywords: ["higienização", "estofados", "limpeza", "impermeabilização", "Cambé", "Ibiporã", "EcoZelo"],
+  openGraph: {
+    title: "EcoZelo Higienização - Agendamento Online",
+    description: "Higienização e impermeabilização de estofados. Agende online!",
+    type: "website",
+    locale: "pt_BR",
+    siteName: "EcoZelo Higienização",
+  },
+  icons: {
+    icon: "/logo-ecozelo.svg",
+    apple: "/logo-ecozelo.svg",
+  },
 };
 
 export default function RootLayout({

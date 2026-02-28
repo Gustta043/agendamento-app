@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -16,8 +16,21 @@ import {
   FiAlertCircle,
 } from "react-icons/fi";
 import toast from "react-hot-toast";
+import { emojiServico } from "@/lib/emojis";
 
-export default function PagamentoPage() {
+export default function PagamentoPageWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    }>
+      <PagamentoPage />
+    </Suspense>
+  );
+}
+
+function PagamentoPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -158,7 +171,7 @@ export default function PagamentoPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <span className="text-xl">
-                {agendamento.servico?.nome.includes("Sofá") ? "🛋️" : "✨"}
+                {emojiServico(agendamento.servico?.nome || "")}
               </span>
               <div>
                 <p className="font-semibold text-gray-900">
@@ -217,7 +230,8 @@ export default function PagamentoPage() {
             )}
           </button>
 
-          {/* Modo desenvolvimento */}
+          {/* Modo desenvolvimento - só aparece em dev */}
+          {process.env.NODE_ENV !== 'production' && (
           <button
             onClick={simularPagamento}
             disabled={processando}
@@ -225,6 +239,7 @@ export default function PagamentoPage() {
           >
             🧪 Simular Pagamento (modo dev)
           </button>
+          )}
         </div>
 
         <div className="flex items-center justify-center gap-2 mt-6 text-gray-400 text-sm">
